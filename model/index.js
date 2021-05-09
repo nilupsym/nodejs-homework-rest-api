@@ -19,7 +19,7 @@ const getContactById = async (contactId) => {
   try {
     const data = await fs.readFile(contactsPath, 'utf-8')
     const contacts = JSON.parse(data)
-    const contactById = contacts.find(contact => contact.id === contactId)
+    const contactById = contacts.find(contact => contact.id === Number(contactId))
     return contactById
   } catch (error) {
     console.log(error.message)
@@ -30,7 +30,7 @@ const removeContact = async (contactId) => {
   try {
     const data = await fs.readFile(contactsPath)
     const contacts = JSON.parse(data)
-    const filteredContacts = contacts.filter(contact => contact.id !== contactId)
+    const filteredContacts = contacts.filter(contact => contact.id !== Number(contactId))
     const contactsList = JSON.stringify(filteredContacts, null, 2)
     await fs.writeFile(contactsPath, contactsList, err => { if (err) console.error(err) })
     return filteredContacts
