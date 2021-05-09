@@ -7,7 +7,7 @@
   },
   {
     "id": 2,
-    "name": "Chaim Lewis",
+    "name": "Bill Murray",
     "email": "dui.in@egetlacus.ca",
     "phone": "(294) 840-6685"
   },
@@ -57,5 +57,11 @@
     "id": "48748c35-31e6-431d-9c38-80ec080d1a86",
     "name": "Andriy",
     "email": "andrandr@mail.com"
+  },
+  {
+    "id": "707b0f8f-1dd5-4496-9520-b4becea6ca62",
+    "name": "Anthony Blinken",
+    "email": "anthonyusa@mail.com",
+    "phone": "(992) 917-4852"
   }
 ]

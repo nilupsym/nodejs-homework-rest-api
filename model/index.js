@@ -52,7 +52,23 @@ const addContact = async (body) => {
   }
 }
 
-const updateContact = async (contactId, body) => {}
+const updateContact = async (contactId, body) => {
+  try {
+    const data = await fs.readFile(contactsPath)
+    const contacts = JSON.parse(data)
+    const updatedContacts = contacts.map(contact => {
+      if (contact.id === Number(contactId)) {
+        return { ...contact, ...body }
+      } return contact
+    })
+    const contactsList = JSON.stringify(updatedContacts, null, 2)
+    const updatedContact = updatedContacts.find(contact => contact.id === Number(contactId))
+    await fs.writeFile(contactsPath, contactsList, err => { if (err) console.error(err) })
+    return updatedContact
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 
 module.exports = {
   listContacts,
