@@ -23,7 +23,7 @@ const validate = async (schema, body, next) => {
   try {
     await schema.validateAsync(body)
     next()
-  } catch (err) { next({ status: 400, message: err.message }) }
+  } catch (err) { next({ status: 400, message: `Field: ${err.message.replace(/"/g, '')}` }) }
 }
 
 module.exports.validateCreateContact = (req, _res, next) => { return validate(schemaCreateContact, req.body, next) }
