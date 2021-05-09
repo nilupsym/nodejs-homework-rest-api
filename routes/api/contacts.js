@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { listContacts, getContactById, removeContact, addContact, updateContact } = require('../../model')
+const { validateCreateContact, validateUpdateContact } = require('./validation')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -29,7 +30,7 @@ router.get('/:contactId', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', validateCreateContact, async (req, res, next) => {
   try {
     const contact = await addContact(req.body)
     return res
@@ -56,7 +57,7 @@ router.delete('/:contactId', async (req, res, next) => {
   }
 })
 
-router.put('/:contactId', async (req, res, next) => {
+router.put('/:contactId', validateUpdateContact, async (req, res, next) => {
   try {
     const updatedContact = await updateContact(req.params.contactId, req.body)
     if (updatedContact) {

@@ -1,5 +1,4 @@
 const fs = require('fs/promises')
-// const contacts = require('./contacts.json')
 const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 
@@ -19,7 +18,7 @@ const getContactById = async (contactId) => {
   try {
     const data = await fs.readFile(contactsPath, 'utf-8')
     const contacts = JSON.parse(data)
-    const contactById = contacts.find(contact => contact.id === Number(contactId))
+    const contactById = contacts.find(contact => contact.id.toString() === contactId.toString())
     return contactById
   } catch (error) {
     console.log(error.message)
@@ -30,7 +29,7 @@ const removeContact = async (contactId) => {
   try {
     const data = await fs.readFile(contactsPath)
     const contacts = JSON.parse(data)
-    const filteredContacts = contacts.filter(contact => contact.id !== Number(contactId))
+    const filteredContacts = contacts.filter(contact => contact.id.toString() !== contactId.toString())
     const contactsList = JSON.stringify(filteredContacts, null, 2)
     await fs.writeFile(contactsPath, contactsList, err => { if (err) console.error(err) })
     return filteredContacts
@@ -57,12 +56,12 @@ const updateContact = async (contactId, body) => {
     const data = await fs.readFile(contactsPath)
     const contacts = JSON.parse(data)
     const updatedContacts = contacts.map(contact => {
-      if (contact.id === Number(contactId)) {
+      if (contact.id.toString() === contactId.toString()) {
         return { ...contact, ...body }
       } return contact
     })
     const contactsList = JSON.stringify(updatedContacts, null, 2)
-    const updatedContact = updatedContacts.find(contact => contact.id === Number(contactId))
+    const updatedContact = updatedContacts.find(contact => contact.id.toString() === contactId.toString())
     await fs.writeFile(contactsPath, contactsList, err => { if (err) console.error(err) })
     return updatedContact
   } catch (error) {
