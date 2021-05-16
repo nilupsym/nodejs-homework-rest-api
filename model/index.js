@@ -1,72 +1,32 @@
-const fs = require('fs/promises')
-const path = require('path')
-const { v4: uuidv4 } = require('uuid')
-
-const contactsPath = path.join(__dirname, 'contacts.json')
+const Contact = require('./schemas/contact')
 
 const listContacts = async () => {
-  try {
-    const data = await fs.readFile(contactsPath)
-    const contacts = JSON.parse(data)
-    return contacts
-  } catch (error) {
-    console.log(error.message)
-  }
+  const results = await Contact.find({})
+  return results
 }
 
 const getContactById = async (contactId) => {
-  try {
-    const data = await fs.readFile(contactsPath, 'utf-8')
-    const contacts = JSON.parse(data)
-    const contactById = contacts.find(contact => contact.id.toString() === contactId.toString())
-    return contactById
-  } catch (error) {
-    console.log(error.message)
-  }
+  const result = await Contact.findOne({ _id: contactId })
+  return result
 }
 
 const removeContact = async (contactId) => {
-  try {
-    const data = await fs.readFile(contactsPath)
-    const contacts = JSON.parse(data)
-    const filteredContacts = contacts.filter(contact => contact.id.toString() !== contactId.toString())
-    const contactsList = JSON.stringify(filteredContacts, null, 2)
-    await fs.writeFile(contactsPath, contactsList, err => { if (err) console.error(err) })
-    return filteredContacts
-  } catch (error) {
-    console.log(error.message)
-  }
+  const result = await Contact.findOneAndRemove({ _id: contactId })
+  return result
 }
 
 const addContact = async (body) => {
-  try {
-    const data = await fs.readFile(contactsPath, 'utf-8')
-    const contacts = JSON.parse(data)
-    const newContact = { id: uuidv4(), ...body, }
-    const updatedContacts = JSON.stringify([...contacts, newContact], null, 2)
-    await fs.writeFile(contactsPath, updatedContacts, err => { if (err) console.error(err) })
-    return newContact
-  } catch (error) {
-    console.log(error.message)
-  }
+  const result = await Contact.create(body)
+  return result
 }
 
 const updateContact = async (contactId, body) => {
-  try {
-    const data = await fs.readFile(contactsPath)
-    const contacts = JSON.parse(data)
-    const updatedContacts = contacts.map(contact => {
-      if (contact.id.toString() === contactId.toString()) {
-        return { ...contact, ...body }
-      } return contact
-    })
-    const contactsList = JSON.stringify(updatedContacts, null, 2)
-    const updatedContact = updatedContacts.find(contact => contact.id.toString() === contactId.toString())
-    await fs.writeFile(contactsPath, contactsList, err => { if (err) console.error(err) })
-    return updatedContact
-  } catch (error) {
-    console.log(error.message)
-  }
+  const result = await Contact.findOneAndUpdate(
+    { _id: contactId, },
+    { ...body },
+    { new: true },
+  )
+  return result
 }
 
 module.exports = {
