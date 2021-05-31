@@ -2,17 +2,18 @@ const express = require('express')
 const router = express.Router()
 const { validateCreateContact, validateUpdateContact, validateFavoriteContact } = require('./validation')
 const ctrl = require('../../../controllers/contacts')
+const guard = require('../../../helpers/guard')
 
-router.get('/', ctrl.getAll)
+router.get('/', guard, ctrl.getAll)
 
-router.get('/:contactId', ctrl.getById)
+router.get('/:contactId', guard, ctrl.getById)
 
-router.post('/', validateCreateContact, ctrl.create)
+router.post('/', guard, validateCreateContact, ctrl.create)
 
-router.delete('/:contactId', ctrl.remove)
+router.delete('/:contactId', guard, ctrl.remove)
 
-router.put('/:contactId', validateUpdateContact, ctrl.update)
+router.put('/:contactId', guard, validateUpdateContact, ctrl.update)
 
-router.patch('/:contactId/favorite', validateFavoriteContact, ctrl.update)
+router.patch('/:contactId/favorite', guard, validateFavoriteContact, ctrl.update)
 
 module.exports = router
