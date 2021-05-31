@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
-// const { listContacts, getContactById, removeContact, addContact, updateContact } = require('../../model')
 const { validateCreateContact, validateUpdateContact, validateFavoriteContact } = require('./validation')
-const ctrl = require('../../controllers/contacts')
+const ctrl = require('../../../controllers/contacts')
 
 router.get('/', ctrl.getAll)
 
