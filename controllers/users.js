@@ -60,11 +60,35 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   await Users.updateToken(req.user.id, null)
-  return res.status(HttpCode.NO_CONTENT).json({})
+  return res.status(HttpCode.NO_CONTENT).json({
+    status: '204 No Content',
+    code: HttpCode.NO_CONTENT,
+  })
+}
+
+const currentUser = async (req, res, next) => {
+  try {
+    const { email, subscription } = req.user
+    const currentUser = await Users.findByEmail(email)
+    if (currentUser) {
+      return res.status(HttpCode.OK).json({
+        status: '200 OK',
+        email,
+        subscription,
+      })
+    }
+    return res.status(HttpCode.UNAUTHORIZED).json({
+      status: '401 Unauthorized',
+      message: 'Not authorized',
+    })
+  } catch (err) {
+    next(err)
+  }
 }
 
 module.exports = {
   signup,
   login,
   logout,
+  currentUser,
 }
