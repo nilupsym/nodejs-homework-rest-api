@@ -68,11 +68,12 @@ const logout = async (req, res, next) => {
 
 const currentUser = async (req, res, next) => {
   try {
-    const { email, subscription } = req.user
+    const { email, subscription, id } = req.user
     const currentUser = await Users.findByEmail(email)
     if (currentUser) {
       return res.status(HttpCode.OK).json({
         status: '200 OK',
+        id,
         email,
         subscription,
       })
@@ -86,9 +87,28 @@ const currentUser = async (req, res, next) => {
   }
 }
 
+const update = async (req, res, next) => {
+  try {
+    const userId = req.user.id
+    const updatedUser = await Users.updateUser(userId, req.body)
+    const { subscription } = updatedUser
+    if (updatedUser) {
+      return res
+        .status(HttpCode.OK)
+        .json({ status: 'success', code: HttpCode.OK, subscription, })
+    }
+    return res
+      .status(HttpCode.NOT_FOUND)
+      .json({ status: 'error', code: HttpCode.NOT_FOUND, message: 'Not Found' })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   signup,
   login,
   logout,
   currentUser,
+  update,
 }
