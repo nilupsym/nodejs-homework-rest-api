@@ -25,7 +25,7 @@ class Upload {
     const folderUserAvatar = path.join(this.AVATARS_OF_USERS, idUser)
     await createFolderIsNotExist(folderUserAvatar)
     await fs.rename(pathFile, path.join(folderUserAvatar, name))
-    await this.deleteOldAvatar(process.cwd(), this.AVATARS_OF_USERS, oldFile)
+    await this.deleteOldAvatar(path.join(process.cwd(), this.AVATARS_OF_USERS, oldFile))
     const avatarUrl = path.normalize(path.join(idUser, name))
     return avatarUrl
   }
