@@ -5,6 +5,10 @@ const guard = require('../../../helpers/guard')
 const { validateSignup, validateUpdateSubscription } = require('./validation')
 const upload = require('../../../helpers/upload')
 
+router.get('/verify/:token', ctrl.verify)
+
+router.post('/verify', ctrl.repeatSendEmailVerify)
+
 router.post('/signup', validateSignup, ctrl.signup)
 
 router.post('/login', ctrl.login)
